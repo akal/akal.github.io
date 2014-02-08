@@ -1,0 +1,18 @@
+---
+layout: post
+title:  "First Post"
+date:   2014-02-07 21:48:00
+categories: jekyll
+---
+After sitting on the basic jekyll site for a few days, I'm finally
+publishing it.
+
+When creating the github repository for the blog, one thing I did not
+notice immediately is that changes are not instantaneous, some time is
+required for it to be visible on the public url. It took a few minutes
+to appear.
+
+Setting up Jekyll and customizing the basic behavior is really easy.
+
+TODO: Replace the default templates with something more pleasing.
+

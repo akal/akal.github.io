@@ -1,0 +1,4 @@
+name: Foo Bar
+markdown: redcarpet
+pygments: true
+timezone: Europe/Paris
