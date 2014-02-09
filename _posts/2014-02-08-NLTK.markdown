@@ -1,0 +1,34 @@
+---
+layout: post
+title:  "NLTK"
+date:   2014-02-08 20:00:00
+categories: nltk
+---
+
+I'm reading through the NLTK book, running examples in Emacs. NLTK is
+installed in a virtualenv, which Emacs does not know what to do with.
+
+The solution is https://github.com/aculich/virtualenv.el.
+
+Downloaded it to emacs load path, using it via
+
+    >(require 'virtualenv)
+
+
+It needs a directory, ~/virtualenvs, into which I've symlinked the
+virtualenv containing NLTK:
+
+
+    >ll ~/virtualenvs
+    [...] nltk-env@ -> /Users/akal/repo/nltk/env/
+
+
+There are two ways to activate the virtualenv from emacs:
+
+*     M-x virtualenv-workon nltk-env
+
+* automatically when opening a python source file, by adding the file
+  .dir-locals.el to the project. However I could not get this to
+  work. 
+
+
