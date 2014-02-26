@@ -1,0 +1,97 @@
+---
+layout: post
+title:  "Postgres"
+date:   2014-02-26 22:07:00
+categories: postgres emacs
+---
+
+Today I've been looking into installing a PostgreSQL development
+database on OSX and making the first steps using it. 
+
+
+Database
+--------
+Although it's available with homebrew, gave
+[postgres.app](http://postgresapp.com/) a go and haven't been
+disappointed: the database instance was up and running in a minute.
+
+
+Setup
+-----
+First, the bin directory of postgres.app,
+"/Applications/Postgres.app/Contents/Versions/9.3/bin", had to be
+added to the PATH. 
+
+```
+akal=# create database sandbox;
+CREATE DATABASE
+akal=# create user sandboxuser with password '...password...';
+CREATE ROLE
+akal=# grant all privileges on database sandbox to sandboxuser;
+GRANT
+akal=# 
+```
+
+The database is still accepting connection attempts as any user,
+without even asking for the password. 
+This can be changed by modifying the configuration file `pg_hba.conf`
+(in my case, in the custom data directory `~/postgres_data/`), setting
+all METHOD values from "trust" to "password".
+
+
+Emacs
+-----
+The built in sql-postgres mode works by default, but it could not find
+the `psql` executable.
+
+Turns out emacs does not use the `PATH` environment variable to find the
+executable, instead I've had to modify `exec-path`:
+
+```
+(setq exec-path 
+  (append exec-path 
+    (list "~/bin"
+          "/Applications/Postgres.app/Contents/Versions/9.3/bin")))
+```
+
+
+Testing
+-------
+
+```
+sandbox=> \d
+\d
+No relations found.
+sandbox=> create table test(id serial, value varchar(200));
+create table test(id serial, value varchar(200));
+CREATE TABLE
+sandbox=> insert into test (value) values ('hello');
+insert into test (value) values ('hello');
+INSERT 0 1
+sandbox=> \d
+\d
+               List of relations
+ Schema |    Name     |   Type   |    Owner    
+--------+-------------+----------+-------------
+ public | test        | table    | sandboxuser
+ public | test_id_seq | sequence | sandboxuser
+(2 rows)
+
+sandbox=> \d test
+\d test
+                                 Table "public.test"
+ Column |          Type          |                     Modifiers                     
+--------+------------------------+---------------------------------------------------
+ id     | integer                | not null default nextval('test_id_seq'::regclass)
+ value  | character varying(200) | 
+
+sandbox=> select * from test;
+select * from test;
+ id | value 
+----+-------
+  1 | hello
+(1 row)
+
+sandbox=> \q
+```
+
